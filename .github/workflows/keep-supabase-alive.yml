@@ -1,11 +1,11 @@
 name: Keep Supabase Alive
 
-# 每 5 天自动运行一次，保持 Supabase 项目活跃
+# 每 3 天自动运行一次，保持 Supabase 项目活跃
 # Supabase 免费版会在 7 天无活动后暂停，此任务确保项目不会被暂停
 on:
   schedule:
-    # 每 5 天的 UTC 时间 02:00 运行 (北京时间 10:00)
-    - cron: '0 2 */5 * *'
+    # 每 3 天的 UTC 时间 02:00 运行 (北京时间 11:00)
+    - cron: '0 2 */3 * *'
   
   # 允许手动触发
   workflow_dispatch:
@@ -33,4 +33,4 @@ jobs:
         if: always()
         run: |
           echo "Job completed at: $(date)"
-          echo "Next scheduled run: In 5 days"
+          echo "Next scheduled run: In 3 days"
