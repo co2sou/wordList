@@ -27,43 +27,7 @@ jobs:
         run: npm ci
 
       - name: Ping Supabase to keep it alive
-        env:
-          VITE_SUPABASE_URL: https://dcqhsrwojhpoynahkewp.supabase.co
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
-        run: |
-          node -e "
-          const { createClient } = require('@supabase/supabase-js');
-          
-          const supabaseUrl = process.env.VITE_SUPABASE_URL;
-          const supabaseKey = process.env.VITE_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRjcWhzcndvamhwb3luYWhrZXdwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTA1MTI2MjUsImV4cCI6MjA2NjA4ODYyNX0.0VEiKPawHosmoUqE3a_P0TENNmXYUBqHhDS1PA0yFL0';
-          
-          const supabase = createClient(supabaseUrl, supabaseKey);
-          
-          (async () => {
-            try {
-              console.log('🔄 Pinging Supabase...');
-              console.log('📍 URL:', supabaseUrl);
-              
-              // 执行简单查询以保持连接活跃
-              const { data, error, count } = await supabase
-                .from('words')
-                .select('id', { count: 'exact', head: true });
-              
-              if (error) {
-                console.error('❌ Error:', error.message);
-                process.exit(1);
-              }
-              
-              console.log('✅ Supabase is alive!');
-              console.log('📊 Total records in words table:', count || 0);
-              console.log('⏰ Last ping:', new Date().toISOString());
-              
-            } catch (err) {
-              console.error('❌ Failed to ping Supabase:', err);
-              process.exit(1);
-            }
-          })();
-          "
+        run: node scripts/ping-supabase.js
 
       - name: Report status
         if: always()
